@@ -1,8 +1,12 @@
 Package: imfapi
 Title: Econdataverse 'IMF Data API' Client
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
-    c(person("Teal Insights", email = "lte@tealinsights.com", role = c("aut", "cre", "cph")))
+    c(
+        person("Teal Insights", email = "lte@tealinsights.com", role = c("cre", "cph")),
+        person("Christopher C. Smith", email = "christopher.smith@promptlytechnologies.com", role = c("aut")),
+        person("Christoph Scheuch", email = "christoph@tidy-intelligence.com", role = c("ctb"))
+    )
 Description: Provides user-friendly functions for programmatic access to macroeconomic data from the International Monetary Fund's 'SDMX 3.0 IMF Data API' <https://data.imf.org/en/Resource-Pages/IMF-API>.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -16,8 +20,10 @@ URL: https://teal-insights.github.io/r-imfapi/,
         https://github.com/Teal-Insights/r-imfapi
 BugReports: https://github.com/Teal-Insights/r-imfapi/issues
 NeedsCompilation: no
-Packaged: 2025-10-21 22:27:17 UTC; chris
-Author: Teal Insights [aut, cre, cph]
+Packaged: 2025-10-28 15:49:21 UTC; chris
+Author: Teal Insights [cre, cph],
+  Christopher C. Smith [aut],
+  Christoph Scheuch [ctb]
 Maintainer: Teal Insights <lte@tealinsights.com>
 Repository: CRAN
-Date/Publication: 2025-10-25 12:40:12 UTC
+Date/Publication: 2025-10-30 07:50:16 UTC

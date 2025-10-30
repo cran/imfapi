@@ -36,11 +36,13 @@
 #' `end_period` query parameters rather than encoding time into the key.
 #'
 #' @examples
+#' \donttest{
 #' if (curl::has_internet()) {
 #'   imf_get(
 #'     dataflow_id = "FM",  # Fiscal Monitor
 #'     dimensions = list(COUNTRY = c("USA", "CAN"))
 #'   )
+#' }
 #' }
 #' @export
 imf_get <- function(
@@ -133,12 +135,63 @@ imf_get <- function(
     attributes = "dsd",
     measures = "all"
   )
+
+  # Helper to transform time periods for API compatibility
+  # The IMF API requires frequency-specific suffixes in time filters
+  transform_period_for_frequency <- function(period, frequency) {
+    if (is.null(period) || !nzchar(period)) return(period)
+
+    # Check if already in SDMX format with frequency suffix:
+    # 2019-M01, 2019-Q1, 2019-A1, 2019-W01
+    if (grepl("^\\d{4}-(M|Q|A|W)\\d+$", period)) return(period)
+
+    # User-friendly month format: "2019-01" to "2019-12"
+    # Convert to SDMX format: "2019-M01"
+    if (grepl("^\\d{4}-\\d{2}$", period)) {
+      parts <- strsplit(period, "-")[[1]]
+      return(paste0(parts[1], "-M", parts[2]))
+    }
+
+    # Plain year (e.g., "2015") needs frequency-specific suffix
+    if (grepl("^\\d{4}$", period)) {
+      # For annual: append -A1
+      # For quarterly: append -Q1
+      # For monthly: append -M01
+      # For weekly: append -W01
+      # If frequency is unknown/wildcarded, use -A1 as safe default
+      suffix <- if (!is.null(frequency) && length(frequency) == 1) {
+        switch(toupper(frequency),
+          "A" = "-A1",
+          "Q" = "-Q1",
+          "M" = "-M01",
+          "W" = "-W01",
+          "-A1"  # default fallback
+        )
+      } else {
+        "-A1"  # default when frequency is wildcarded
+      }
+      return(paste0(period, suffix))
+    }
+
+    # Otherwise return as-is
+    period
+  }
+
+  # Extract frequency from user's dimension filter (if provided)
+  user_frequency <- norm_dims[["FREQUENCY"]]
+
   time_filters <- character(0)
   if (!is.null(start_period)) {
-    time_filters <- c(time_filters, paste0("ge:", start_period))
+    transformed_start <- transform_period_for_frequency(
+      start_period, user_frequency
+    )
+    time_filters <- c(time_filters, paste0("ge:", transformed_start))
   }
   if (!is.null(end_period)) {
-    time_filters <- c(time_filters, paste0("le:", end_period))
+    transformed_end <- transform_period_for_frequency(
+      end_period, user_frequency
+    )
+    time_filters <- c(time_filters, paste0("le:", transformed_end))
   }
 
   # Determine dataflow agency (owner) using dataflows helper
