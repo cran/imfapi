@@ -1,6 +1,6 @@
 Package: imfapi
 Title: Econdataverse 'IMF Data API' Client
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
     c(
         person("Teal Insights", email = "lte@tealinsights.com", role = c("cre", "cph")),
@@ -20,10 +20,10 @@ URL: https://teal-insights.github.io/r-imfapi/,
         https://github.com/Teal-Insights/r-imfapi
 BugReports: https://github.com/Teal-Insights/r-imfapi/issues
 NeedsCompilation: no
-Packaged: 2025-10-28 15:49:21 UTC; chris
+Packaged: 2025-11-19 19:36:34 UTC; chris
 Author: Teal Insights [cre, cph],
   Christopher C. Smith [aut],
   Christoph Scheuch [ctb]
 Maintainer: Teal Insights <lte@tealinsights.com>
 Repository: CRAN
-Date/Publication: 2025-10-30 07:50:16 UTC
+Date/Publication: 2025-11-19 20:20:02 UTC
